@@ -1,0 +1,51 @@
+﻿@using EliteBuild.Models.View;
+@{
+    ViewBag.Title = "Редактор страниц";
+    Int32 PageId = (this.ViewBag.PageId != null) ? this.ViewBag.PageId : -1;
+    Int32 PageSubmenu = (this.ViewBag.PageSubmenu != null) ? this.ViewBag.PageSubmenu : -1;
+    String PageTitle = (this.ViewBag.PageTitle != null) ? this.ViewBag.PageTitle : "";
+
+    List<ModuleView> Items = (this.ViewBag.Modules != null && this.ViewBag.Modules.Count > 0) ? this.ViewBag.Modules : new List<ModuleView>() { new ModuleView(-1, "") };
+    List<ModuleTypeView> Types = (this.ViewBag.ModuleTypes != null && this.ViewBag.ModuleTypes.Count > 0) ? this.ViewBag.ModuleTypes : new List<ModuleTypeView>() { new ModuleTypeView(-1, "HTML-код") };
+    List<NavView> MainMenu = (this.ViewBag.MainMenu != null) ? this.ViewBag.MainMenu : new List<NavView>();
+
+}
+<div id="items">
+    <div>
+        <input type="text" name="Title" id="Title" value="@PageTitle" class="mb-3 w-100 p-1">
+    </div>
+    <div class="sel_submenu mb-3">
+        <label for="submenu" class="mr-3">Главная страница: </label>
+        <select id="submenu">
+            <option value="-2">Доступ по ссылке</option>
+            <option value="-1" @((-1 == PageSubmenu) ? "selected" : "")>-</option>
+            @foreach (var Item in MainMenu)
+            {
+                <option value="@Item.Id" @((Item.Id == PageSubmenu) ? "selected" : "")>@Item.Title</option>
+            }
+        </select>
+    </div>
+    @foreach (var Item in Items)
+    {
+        <div class="edit">
+            <div class="type">
+                <button type="button" class="btn btn-border" onclick="remove_edit(this)"><img src="~/Data/img/cancel.png"></button>
+                <select>
+                    @foreach (var Type in Types)
+                    {
+                        <option value="@Type.Id" @((Item.Type == Type.Id || Types.Count == 1) ? "selected" : "")>@Type.Title</option>
+                    }
+                </select>
+            </div>
+            <textarea maxlength="8000">@Item.Text</textarea>
+        </div>
+    }
+</div>
+
+<div class="button">
+    <button type="button" class="btn btn-border" onclick="add_edit()"><img src="~/Data/img/plus.png"></button>
+</div>
+
+<div class="mt-3">
+    <button type="button" class="btn btn-sky" onclick="send_page('/Page/Add', @PageId)">Сохранить</button>
+</div>

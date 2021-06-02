@@ -1,0 +1,100 @@
+﻿@using EliteBuild.Models.View;
+
+@{
+    Int32 PageId = (this.ViewBag.PageId != null) ? this.ViewBag.PageId : -1;
+    Int32 UserID = (this.ViewBag.UserID != null) ? this.ViewBag.UserID : -1;
+    Boolean isAdmin = (this.ViewBag.isAdmin != null) ? this.ViewBag.isAdmin : false;
+    List<NavView> Pages = (this.ViewBag.MainMenu != null) ? this.ViewBag.MainMenu : new List<NavView>();
+}
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <img src="~/Data/img/menu.png" style="max-height: 32px;">
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                @foreach (var Item in Pages)
+                {
+                    if (Item.Items.Count > 0)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Виды ремонтных работ</a>
+                            <ul class="dropdown-menu">
+                                @foreach (var SubItem in Item.Items)
+                                {
+                                    <li><a class="dropdown-item @((Item.Active) ? "active" : "")" href="@SubItem.Page">@SubItem.Title</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link @((Item.Active) ? "active" : "")" aria-current="page" href="@Item.Page">@Item.Title</a>
+                        </li>
+                    }
+                }
+
+                <li class="nav-item">
+                    <a class="nav-link @((this.ViewBag.ActivePage == -4) ? "active" : "")" aria-current="page" href="/Page/Calculator">
+                        @if (this.ViewBag.ActivePage == -4)
+                        {
+                            <img src="~/Data/img/calculator_w.png" class="mr-1">
+                        }
+                        else
+                        {
+                            <img src="~/Data/img/calculator.png" class="mr-1">
+                        }
+                    </a>
+                </li>
+            </ul>
+
+            <div class="d-flex">
+                @if (UserID == -1)
+                {
+                    <div class="nav-item" style="float: right;">
+                        <a class="nav-link" aria-current="page" onclick="Show('.login')">Войти</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="nav-item" style="float: right;">
+                        <a class="nav-link @((this.ViewBag.ActivePage == -2) ? "active" : "")" aria-current="page" href="/Page/Account">
+                            @if (this.ViewBag.ActivePage == -2)
+                            {
+                                <img src="~/Data/img/profile_w.png">
+                            }
+                            else
+                            {
+                                <img src="~/Data/img/profile.png">
+                            }
+                        </a>
+                    </div>
+                }
+                @if (isAdmin)
+                {
+                    <div class="nav-item" style="float: right;">
+                        <a class="nav-link @((this.ViewBag.ActivePage == -3) ? "active" : "")" aria-current="page" href="/Page/Editor/@PageId">
+                            @if (this.ViewBag.ActivePage == -3)
+                            {
+                                <img src="~/Data/img/edit_w.png">
+                            }
+                            else
+                            {
+                                <img src="~/Data/img/edit.png">
+                            }
+                        </a>
+                    </div>
+                    <div class="nav-item" style="float: right;">
+                        <a class="nav-link" aria-current="page" href="/Page/Editor"><img src="~/Data/img/plus.png"></a>
+                    </div>
+                    <div class="nav-item" style="float: right;">
+                        <a class="nav-link" aria-current="page" onclick="Show('.remove')"><img src="~/Data/img/trash.png"></a>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</nav>

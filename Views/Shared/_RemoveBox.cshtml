@@ -1,0 +1,20 @@
+﻿@{ 
+    Int32 ActivePage = -1;
+    if (this.ViewBag.ActivePage != null && Int32.TryParse(this.ViewBag.ActivePage.ToString(), out ActivePage))
+    { }
+}
+
+<div class="modal remove">
+    <div class="card zajavka">
+        <div class="card-body">
+            <div class="title">
+                <h2>Вы действительно хотите удалить страницу?</h2>
+            </div>
+            <div class="modal-footer">
+                <hidden id="page" value="@ActivePage"></hidden>
+                <button type="button" class="btn btn-sky" onclick="remove('/Page/Remove')">Да</button>
+                <button type="button" class="btn btn-primary" onclick="Hide('.remove')">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>

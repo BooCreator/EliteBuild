@@ -1,0 +1,29 @@
+﻿@using EliteBuild.Models.View;
+@{ 
+    ProfileView User = (this.ViewBag.UserData != null) ? this.ViewBag.UserData : new ProfileView(0, "", "");
+}
+
+<div class="modal request">
+    <div class="card zajavka">
+        <div class="card-body">
+            <div class="title">
+                <h2>Оставить заявку</h2>
+                <button type="button" class="btn btn-hidden" onclick="Hide('.request')"><img src="~/Data/img/close.png"></button>
+            </div>
+            <form>
+                <label for="fio_name" class="form-label">ФИО:</label>
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="fio_name" value="@User.Name">
+                </div>
+                <div id="fio_name_help" class="form-text"></div>
+                <label for="fio_phone" class="form-label">Телефон:</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="phone_code">+375</span>
+                    <input type="text" class="form-control" id="phone" maxlength="9" value="@User.Phone">
+                </div>
+                <div id="fio_name_help" class="form-text"></div>
+                <button type="button" class="btn btn-sky" onclick="send_request('/Request/Add')">Отправить</button>
+            </form>
+        </div>
+    </div>
+</div>

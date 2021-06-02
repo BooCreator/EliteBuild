@@ -1,0 +1,78 @@
+﻿@using EliteBuild.Models.View;
+@{
+    ViewBag.Title = "Калькулятор";
+
+    List<WorkView> Works = (this.ViewBag.Works != null) ? this.ViewBag.Works : new List<WorkView>();
+    CalculateView Calculate = (this.ViewBag.Calculate != null) ? this.ViewBag.Calculate : new CalculateView();
+}
+
+<div class="calculator">
+    <form>
+        <label class="form-label">Выберите тип работы</label>
+        <div class="check_work category">
+            @foreach (var Item in Works)
+            {
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="category_@Item.Id" name="radio-stacked" onclick="ShowCategory('.cat_@Item.Id')" @((Item.Id == Calculate.Category) ? "checked" : "")>
+                    <label class="form-check-label" for="category_@Item.Id">@Item.Title</label>
+                </div>
+            }
+        </div>
+        <div class="check_work work">
+            @foreach (var Item in Works)
+            {
+                <div class="category cat_@Item.Id @((Calculate.Category == Item.Id) ? "show" : "")">
+                    @foreach (var Work in Item.Items)
+                    {
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" id="work_@Work.Id" name="radio-work" value="@Work.Price" onclick="SumAll()" @((Work.Id == Calculate.Work) ? "checked" : "")>
+                            <label class="form-check-label" for="work_@Work.Id">@Work.Title (@Work.Price руб.)</label>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <label class="form-label">Укажите размер помещений</label>
+        <div class="check_room">
+            @if (Calculate.Items.Count > 0)
+            {
+                foreach (var Item in Calculate.Items)
+                {
+                    <div class="room">
+                        <label class="form-label title">Помещение</label>
+                        <div>
+                            <label for="validationCustom01" class="form-label">Площадь(М²)</label>
+                            <input type="text" class="form-control sqare" value="@Item.Input1" onchange="SumAll()">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div>
+                            <label for="validationCustom01" class="form-label">Высота (М)</label>
+                            <input type="text" class="form-control height" value="@Item.Input2" onchange="SumAll()">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="room">
+                    <label class="form-label title">Помещение</label>
+                    <div>
+                        <label for="validationCustom01" class="form-label">Площадь(М²)</label>
+                        <input type="text" class="form-control sqare" value="" onchange="SumAll()">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div>
+                        <label for="validationCustom01" class="form-label">Высота (М)</label>
+                        <input type="text" class="form-control height" value="" onchange="SumAll()">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="button">
+            <button type="button" class="btn btn-border" onclick="add_room()"><img src="/Data/img/plus.png"></button>
+        </div>
+        <label class="form-label mt-3">Сумма: <strong id="price">@Calculate.Price руб.</strong></label>
+    </form>
+</div>

@@ -1,0 +1,76 @@
+﻿@using EliteBuild.Models.View;
+@{
+    ViewBag.Title = "Admin";
+    ProfileView User = this.ViewBag.UserData;
+    List<PagesView> Pages = (this.ViewBag.PagesData != null) ? this.ViewBag.PagesData : new List<PagesView>();
+    List<FooterBlockView> Blocks = (this.ViewBag.FooterMenu != null) ? this.ViewBag.FooterMenu : new List<FooterBlockView>();
+}
+
+@if (User != null)
+{
+    <h2>Данные профиля</h2>
+    <div class="table">
+        <table style="max-width: 650px;" class="nonhover">
+            <tbody>
+                <tr>
+                    <th>ФИО</th>
+                    <th>Логин</th>
+                    <th style="width: 67px;"></th>
+                </tr>
+                <tr>
+                    <td>@User.Name</td>
+                    <td>@User.Phone</td>
+                    <td><a type="button" class="btn btn-border" href="/Account/Logoff">Выход</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (Pages.Count > 0)
+{
+    <h2>Страницы сайта</h2>
+    <div class="table">
+        <table class="nonhover">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <th></th>
+                    <th>Название</th>
+                    <th>Блок в подвале</th>
+                    <th style="width: 104px;">Управление</th>
+                </tr>
+                @foreach (var Item in Pages)
+                {
+                    <tr>
+                        <td>@Item.Id</td>
+                        <td style="text-align: center;">
+                            @if (Item.Hidden)
+                            {
+                                <img src="~/Data/img/hidden.png">
+                            }
+                        </td>
+                        <td>
+                            <a href="/Page/Index/@Item.Id">@Item.MainMenu -> @Item.Title</a>
+                        </td>
+                        <td>
+                            <select onchange="update_PageBlock('/Page/Update', @Item.Id, this)">
+                                <option value="-1" @((Item.FooterBlock == -1) ? "selected" : "")>Нет в блоках</option>
+                                @foreach (var Block in Blocks)
+                                {
+                                    <option value="@Block.Id" @((Item.FooterBlock == Block.Id) ? "selected" : "")>@Block.Title</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a type="button" class="btn btn-border" href="/Page/Editor/@Item.Id"><img src="~/Data/img/edit.png"></a>
+                                <a class="btn btn-border" onclick="Show_Value('.remove', @Item.Id)"><img src="~/Data/img/trash.png"></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

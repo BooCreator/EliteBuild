@@ -1,0 +1,66 @@
+﻿@using EliteBuild.Models.View;
+@{
+    ViewBag.Title = "Управление заявками";
+    ProfileView User = this.ViewBag.UserData;
+    List<RequestView> Requests = (this.ViewBag.Requests != null) ? this.ViewBag.Requests : new List<RequestView>();
+    List<RequestStateView> RequestStates = (this.ViewBag.RequestStates != null) ? this.ViewBag.RequestStates : new List<RequestStateView>();
+    Requests.Reverse();
+}
+
+@if (User != null)
+{
+    <h2>Данные профиля</h2>
+    <div class="table">
+        <table style="max-width: 650px;" class="nonhover">
+            <tbody>
+                <tr>
+                    <th>ФИО</th>
+                    <th>Логин</th>
+                    <th style="width: 67px;"></th>
+                </tr>
+                <tr>
+                    <td>@User.Name</td>
+                    <td>@User.Phone</td>
+                    <td><a type="button" class="btn btn-border" href="/Account/Logoff">Выход</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (Requests.Count > 0)
+{
+    <h2>Управление заявками</h2>
+    <div class="table">
+        <table class="nonhover">
+            <tbody>
+                <tr>
+                    <th>№</th>
+                    <th>ФИО</th>
+                    <th>Телефон</th>
+                    <th>Дата</th>
+                    <th>Калькуляция</th>
+                    <th>Состояние</th>
+                </tr>
+                @foreach (var Item in Requests)
+                {
+                    <tr>
+                        <td>@Item.Id</td>
+                        <td>@Item.Name</td>
+                        <td>+375 @Item.Phone</td>
+                        <td>@Item.Date</td>
+                        <td><a type="button" class="btn btn-border" href="/Page/Calculator?param=@Item.Calculate">Открыть</a></td>
+                        <td>
+                            <select onchange="update_ReqState('/Request/Update', @Item.Id, this)">
+                                @foreach (var State in RequestStates)
+                                {
+                                    <option value="@State.Id" @((State.Id == Item.State) ? "selected" : "")>@State.Title</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,18 @@
+﻿@using EliteBuild.Models.View;
+@{
+    Int32 PageId = (this.ViewBag.PageId != null) ? this.ViewBag.PageId : -1;
+    String PageTitle = (this.ViewBag.PageTitle != null) ? this.ViewBag.PageTitle : "";
+    this.ViewBag.Title = PageTitle;
+
+    List<ModuleView> Items = (this.ViewBag.Modules != null && this.ViewBag.Modules.Count > 0) ? this.ViewBag.Modules : new List<ModuleView>() { new ModuleView(-1, "") };
+    List<ModuleTypeView> Types = (this.ViewBag.ModuleTypes != null && this.ViewBag.ModuleTypes.Count > 0) ? this.ViewBag.ModuleTypes : new List<ModuleTypeView>() { new ModuleTypeView(-1, "HTML-код") };
+}
+<div id="items">
+    @foreach (var Item in Items)
+    {
+        ModuleTypeView type = Types.Find(X => X.Id == Item.Type);
+        <div class="@((type != null) ? type.Class : "")">
+            @Html.Raw(Item.Text)
+        </div>
+    }
+</div>

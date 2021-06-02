@@ -1,0 +1,33 @@
+﻿@model EliteBuild.Account.LoginModel
+
+<div class="modal login">
+    <div class="card zajavka">
+        <div class="card-body">
+            <div class="title">
+                <h2>Войти в систему</h2>
+                <button type="button" class="btn btn-hidden" onclick="Hide('.login')"><img src="~/Data/img/close.png"></button>
+            </div>
+            <form action="/Account/Login" method="post">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                <div class="form-group">
+                    <h5 for="Login">Номер телефона:</h5>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="phone_code">+375</span>
+                        <input type="text" class="form-control" id="Phone" name="Phone" maxlength="9" aria-describedby="loginHelp">
+                    </div>
+                    <small id="loginHelp" class="form-text text-muted">Введите номер телефона.</small>
+                    @Html.ValidationMessageFor(model => model.Phone)
+                </div>
+                <div class="form-group">
+                    <h5 for="Password">Пароль:</h5>
+                    <input type="password" class="form-control" id="Password" name="Password">
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+
+                <button type="submit" class="btn btn-sky">Войти</button>
+            </form>
+        </div>
+    </div>
+</div>

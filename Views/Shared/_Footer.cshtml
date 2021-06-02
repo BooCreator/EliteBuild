@@ -1,0 +1,60 @@
+﻿@using EliteBuild.Models.View;
+
+@{
+    List<FooterBlockView> Blocks = (this.ViewBag.FooterMenu != null) ? this.ViewBag.FooterMenu : new List<FooterBlockView>();
+}
+
+
+<footer>
+    @foreach (var Item in Blocks)
+    {
+        <div>
+            <p class="title">@Item.Title</p>
+            @foreach (var Menu in Item.Items)
+            {
+                <a href="@Menu.Page">@Menu.Title</a>
+            }
+        </div>
+    }
+    <div>
+        <p class="title">Наши контакты</p>
+        <button type="button" class="btn btn-sky" onclick="Show('.request')">Заказать консультацию</button>
+        <div class="phones">
+            <div>
+                <img src="/Data/img/phone_b.png">
+                <p>999</p>
+            </div>
+            <div>
+                <img src="/Data/img/clock_b.png">
+                <div>
+                    <p>
+                        Пн - Пт 8.00 - 21.00<br />
+                        Сб - Вс 10.00 - 18.00
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!--
+
+    <div>
+        <p class="title">Виды ремонтных работ</p>
+        <a href="#">Электрика</a>
+        <a href="#">Сантехника</a>
+        <a href="#">Укладка плитки</a>
+        <a href="#">Малярные работы</a>
+        <a href="#">Укладка ламината</a>
+        <a href="#">Ремонт под ключ</a>
+    </div>
+    <div>
+        <p class="title">Дополнительно</p>
+        <a href="#">О компании</a>
+        <a href="#">Блок</a>
+        <a href="#">Статьи</a>
+        <a href="#">Контакты</a>
+    </div>
+
+-->

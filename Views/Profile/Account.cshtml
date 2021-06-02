@@ -1,0 +1,60 @@
+﻿@using EliteBuild.Models.View;
+@{
+    ViewBag.Title = "Профиль пользователя";
+    ProfileView User = this.ViewBag.UserData;
+    List<RequestView> Requests = (this.ViewBag.Requests != null) ? this.ViewBag.Requests : new List<RequestView>();
+    List<RequestStateView> RequestStates = (this.ViewBag.RequestStates != null) ? this.ViewBag.RequestStates : new List<RequestStateView>();
+    Requests.Reverse();
+}
+
+@if (User != null)
+{
+    <h2>Данные профиля</h2>
+    <div class="table">
+        <table style="max-width: 650px;" class="nonhover">
+            <tbody>
+                <tr>
+                    <th>ФИО</th>
+                    <th>Телефон</th>
+                    <th style="width: 67px;"></th>
+                </tr>
+                <tr>
+                    <td>@User.Name</td>
+                    <td>+375 @User.Phone</td>
+                    <td><a type="button" class="btn btn-border" href="/Account/Logoff">Выход</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (Requests.Count > 0)
+{
+    <h2>Мои заявки</h2>
+    <div class="table">
+        <table style="max-width: 650px;" class="nonhover">
+            <tbody>
+                <tr>
+                    <th>№</th>
+                    <th>Дата</th>
+                    <th>Калькуляция</th>
+                    <th>Состояние</th>
+                </tr>
+                @foreach (var Item in Requests)
+                {
+                    <tr>
+                        <td>@Item.Id</td>
+                        <td>@Item.Date</td>
+                        <td><a type="button" class="btn btn-border" href="/Page/Calculator?param=@Item.Calculate">Открыть</a></td>
+                        <td>
+                            @if (RequestStates.Find(x => x.Id == Item.State) != null)
+                            {
+                                <p>@RequestStates.Find(x => x.Id == Item.State).Title</p>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
